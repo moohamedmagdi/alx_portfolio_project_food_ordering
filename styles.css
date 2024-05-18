@@ -17,4 +17,37 @@ body {
   nav {
     margin-top: 10px;
   }
+  .btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: transparent;
+    color: #659;
+    text-decoration: none;
+    margin-right: 10px;
+    border: 2px solid #659;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .btn:hover {
+    background-color: #333;
+    color: #fff;
+  }
+
+  main {
+    padding: 20px;
+  }
+
+  section {
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    margin-top: 0;
+  }
+
+  form {
+    display: grid;
+    gap: 10px;
+  }
 
