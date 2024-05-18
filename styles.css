@@ -50,4 +50,21 @@ body {
     display: grid;
     gap: 10px;
   }
+  label {
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 5px;
+  }
+
+  button[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
 
