@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Food Ordering Website</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="script.js"></script>
+  <script defer src="script.js"></script>
 </head>
 
 <body>
@@ -16,7 +16,7 @@
   </header>
 
   <main>
-
+    
     <section>
       <h2>Order Form</h2>
       <form id="order-form" action="/submit-order" method="POST">
@@ -35,14 +35,15 @@
           <!-- Add more drink options here -->
         </select>
         <label for="phone">Phone:</label>
-        <textarea id="phone" name="phone" required></textarea>
+        <input type="text" id="phone" name="phone" required>
         <label for="address">Address:</label>
-        <textarea id="address" name="address" required></textarea>
+        <input type="text" id="address" name="address" required>
         <label for="notes">Notes:</label>
-        <textarea id="notes" name="notes"></textarea>
+        <input type="text" id="notes" name="notes">
         <button type="submit">Place Order</button>
       </form>
     </section>
+
     <section id="order-summary" style="display: none;">
       <p id="message"></p>
       <p>Your order ID is: <span id="order-id"></span></p>
@@ -50,7 +51,6 @@
       <p>Drink price: $<span id="drink-price"></span></p>
       <p>Total price: $<span id="total-price"></span></p>
     </section>
-
 
   </main>
 
@@ -60,4 +60,7 @@
 
 
 </body>
+
+</html>
+
 
