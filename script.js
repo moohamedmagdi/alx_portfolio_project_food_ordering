@@ -46,4 +46,16 @@ document.getElementById('order-form').addEventListener('submit', function(event)
 });
 
 
+function showOrderSummaryAlert(message, orderId, foodPrice, drinkPrice, totalPrice) {
+  const summary = `
+    ${message}
+    Your order ID is: ${orderId}
+    Food price: $${foodPrice.toFixed(2)}
+    Drink price: $${drinkPrice.toFixed(2)}
+    Total price: $${totalPrice.toFixed(2)}
+  `;
+  alert(summary);
+}
+
+
 
