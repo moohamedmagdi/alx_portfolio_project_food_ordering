@@ -58,4 +58,15 @@ function showOrderSummaryAlert(message, orderId, foodPrice, drinkPrice, totalPri
 }
 
 
+// Update the food and drink order input fields based on the user's selection
+document.getElementById('food').addEventListener('change', function() {
+  var foodOrderInput = document.getElementById('food-order');
+  foodOrderInput.value = this.value;
+});
+
+document.getElementById('drink').addEventListener('change', function() {
+  var drinkOrderInput = document.getElementById('drink-order');
+  drinkOrderInput.value = this.value;
+});
+
 
