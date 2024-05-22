@@ -22,4 +22,12 @@ def create_orders_table():
     conn.commit()
     conn.close()
 
+def get_item_price(item):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute('SELECT price FROM items WHERE item = ?', (item,))
+    price = cursor.fetchone()
+    conn.close()
+    return price[0] if price else 0.0
+
 
