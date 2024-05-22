@@ -30,4 +30,33 @@ def get_item_price(item):
     conn.close()
     return price[0] if price else 0.0
 
+@app.route('/submit-order', methods=['POST'])
+def submit_order():
+    data = request.get_json()
+    food = data.get('food')
+    drink = data.get('drink')
+    phone = data.get('phone')
+    address = data.get('address')
+    notes = data.get('notes')
+
+    food_price = get_item_price(food)
+    drink_price = get_item_price(drink)
+    total_price = food_price + drink_price
+
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    # Insert the order into the database
+    cursor.execute('''
+        INSERT INTO orders (food, drink, phone, address, notes)
+        VALUES (?, ?, ?, ?, ?)
+    ''', (food, drink, phone, address, notes))
+    conn.commit()
+
+    # Fetch the ID of the last inserted order
+    cursor.execute('SELECT id FROM orders ORDER BY id DESC LIMIT 1')
+    order_id = cursor.fetchone()[0]
+
+    conn.close()
+
 
