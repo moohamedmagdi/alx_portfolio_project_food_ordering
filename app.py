@@ -59,4 +59,18 @@ def submit_order():
 
     conn.close()
 
+    # Return the order ID and success message as JSON response
+    return jsonify({
+        'message': 'Order submitted successfully!, call 19191 to check your order delivery status.', 
+        'order_id': order_id,
+        'food_price': food_price,
+        'drink_price': drink_price,
+        'total_price': total_price
+        })
+
+
+
+if __name__ == '__main__':
+    create_orders_table()
+    app.run(port=8080)
 
