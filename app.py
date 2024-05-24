@@ -16,11 +16,14 @@ def create_orders_table():
             drink TEXT,
             phone TEXT,
             address TEXT,
-            notes TEXT
+            notes TEXT,
+            food_quantity INTEGER,
+            drink_quantity INTEGER
         )
     ''')
     conn.commit()
     conn.close()
+
 
 def get_item_price(item):
     conn = sqlite3.connect(DATABASE)
@@ -30,6 +33,7 @@ def get_item_price(item):
     conn.close()
     return price[0] if price else 0.0
 
+
 @app.route('/submit-order', methods=['POST'])
 def submit_order():
     data = request.get_json()
@@ -38,9 +42,11 @@ def submit_order():
     phone = data.get('phone')
     address = data.get('address')
     notes = data.get('notes')
+    food_quantity = data.get('food_quantity')
+    drink_quantity = data.get('drink_quantity')
 
-    food_price = get_item_price(food)
-    drink_price = get_item_price(drink)
+    food_price = get_item_price(food) * food_quantity
+    drink_price = get_item_price(drink) * drink_quantity
     total_price = food_price + drink_price
 
     conn = sqlite3.connect(DATABASE)
@@ -48,9 +54,9 @@ def submit_order():
 
     # Insert the order into the database
     cursor.execute('''
-        INSERT INTO orders (food, drink, phone, address, notes)
-        VALUES (?, ?, ?, ?, ?)
-    ''', (food, drink, phone, address, notes))
+        INSERT INTO orders (food, drink, phone, address, notes, food_quantity, drink_quantity)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ''', (food, drink, phone, address, notes, food_quantity, drink_quantity))
     conn.commit()
 
     # Fetch the ID of the last inserted order
