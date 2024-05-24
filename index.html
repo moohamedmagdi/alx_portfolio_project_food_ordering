@@ -11,14 +11,17 @@
 
 <body>
   <header>
-    <h1>Welcome to Food Ordering Website</h1>
-    
+    <h1>Welcome to Food Ordering Website (Order Now)</h1>
+    <div class="header-buttons">
+      <button onclick="aboutUs()">About Us</button>
+      <button onclick="contactUs()">Contact Us</button>
+    </div>
   </header>
 
   <main>
     
     <section>
-      <h2>Order Form</h2>
+      <h2>Order Form (Select items and click 'place order' below)</h2>
       <form id="order-form" action="/submit-order" method="POST">
         <label for="food">Food:</label>
         <select id="food" name="food">
@@ -27,6 +30,10 @@
           <option value="pasta">Pasta $10</option>
           <!-- Add more food options here -->
         </select>
+
+        <label for="food-quantity">Food Quantity:</label>
+        <input type="number" id="food-quantity" name="food_quantity" min="1" value="1">
+
         <label for="drink">Drink:</label>
         <select id="drink" name="drink">
           <option value="coke">Coke $2</option>
@@ -34,6 +41,10 @@
           <option value="lemonade">Lemonade $4</option>
           <!-- Add more drink options here -->
         </select>
+
+        <label for="drink-quantity">Drink Quantity:</label>
+        <input type="number" id="drink-quantity" name="drink_quantity" min="0" value="1">
+
         <label for="phone">Phone:</label>
         <input type="text" id="phone" name="phone" required>
         <label for="address">Address:</label>
@@ -61,6 +72,17 @@
 
 </body>
 
-</html>
+<script>
+  function aboutUs() {
+    alert("About Us: We are a leading food delivery service dedicated to bringing you the best meals from top restaurants.");
+  }
 
+  function contactUs() {
+    alert("Contact Us: You can reach us at contact@foodordering.com or call us at 19191.");
+  }
+
+
+</script>
+
+</html>
 
