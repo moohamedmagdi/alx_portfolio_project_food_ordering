@@ -1,72 +1,191 @@
-document.addEventListener('DOMContentLoaded', function() {
-  // Check if there is saved phone and address in localStorage
-  if (localStorage.getItem('phone')) {
-      document.getElementById('phone').value = localStorage.getItem('phone');
-  }
-  if (localStorage.getItem('address')) {
-      document.getElementById('address').value = localStorage.getItem('address');
-  }
-});
+/* Base Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+  color: #333;
+}
 
+header {
+  background: #0c19ae;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-document.getElementById('order-form').addEventListener('submit', function(event) {
-  event.preventDefault(); // Prevent form submission
+header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  flex-grow: 1;
+  text-align: left;
+  padding-left: 20px;
+}
 
-  // Get form data
-  var food = document.getElementById('food').value;
-  var drink = document.getElementById('drink').value;
-  var phone = document.getElementById('phone').value;
-  var address = document.getElementById('address').value;
-  var notes = document.getElementById('notes').value;
+.header-buttons {
+  padding-right: 20px;
+}
 
-  // Store phone and address in localStorage
-  localStorage.setItem('phone', phone);
-  localStorage.setItem('address', address);
+.header-buttons button {
+  background: #704ac1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background 0.3s ease;
+}
 
-  // Send data to server
-  fetch('/submit-order', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ food: food, drink: drink, phone: phone, address: address, notes: notes })
-  })
+.header-buttons button:hover {
+  background: #28d24a;
+}
 
-  .then(response => response.json())
-  .then(data => {
-    console.log(data); // Log the response from the server
-      // Generate order summary and show it in an alert box
-      showOrderSummaryAlert(data.message, data.order_id, data.food_price, data.drink_price, data.total_price);
-  })
+main {
+  padding: 100px 20px 60px; /* Adjusted to account for fixed header and footer */
+  max-width: 800px;
+  margin: 20px auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-  .catch(error => {
-    console.error(error); // Log any errors that occur
-    alert('An error occurred while submitting your order.');
-  });
-});
+h2 {
+  color: #ff6f61;
+  font-size: 1.8rem;
+}
 
+form {
+  display: flex;
+  flex-direction: column;
+}
 
-function showOrderSummaryAlert(message, orderId, foodPrice, drinkPrice, totalPrice) {
-  const summary = `
-    ${message}
-    Your order ID is: ${orderId}
-    Food price: $${foodPrice.toFixed(2)}
-    Drink price: $${drinkPrice.toFixed(2)}
-    Total price: $${totalPrice.toFixed(2)}
-  `;
-  alert(summary);
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #ff6f61;
+}
+
+select, textarea, input[type="text"], input[type="number"] {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 2px solid #704ac1;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+button[type="submit"] {
+  background: #704ac1;
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+}
+
+button[type="submit"]:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+button[type="submit"]:hover {
+  background: #28d24a;
+  transform: scale(1.05);
+}
+
+button[type="submit"]:active {
+  background: #e55b50;
+  transform: scale(0.95);
+}
+
+button[type="submit"]:active::before {
+  transition: none;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background: #0c19ae;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+footer p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Additional Fun Styles */
+button[type="submit"]:active {
+  transform: scale(0.95);
+}
+
+textarea, select, input[type="text"], input[type="number"] {
+  transition: box-shadow 0.3s ease, border 0.3s ease;
+}
+
+textarea:focus, select:focus, input[type="text"]:focus, input[type="number"]:focus {
+  box-shadow: 0 0 10px rgba(255, 111, 97, 0.5);
+  border: 2px solid #ff9770;
+}
+
+#order-summary {
+  background: #ffecd2;
+  border: 2px solid #ff6f61;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+#order-summary p {
+  margin: 10px 0;
+  font-size: 1.2rem;
+  color: #ff6f61;
+}
+
+#order-summary span {
+  font-weight: bold;
 }
 
 
-// Update the food and drink order input fields based on the user's selection
-document.getElementById('food').addEventListener('change', function() {
-  var foodOrderInput = document.getElementById('food-order');
-  foodOrderInput.value = this.value;
-});
+button[type="submit"] {
+  background-color: #704ac1;
+  font-weight: bold;
+  animation: rainbow 2s linear infinite;
+}
 
-document.getElementById('drink').addEventListener('change', function() {
-  var drinkOrderInput = document.getElementById('drink-order');
-  drinkOrderInput.value = this.value;
-});
-
-
+@keyframes rainbow {
+  0% { color: red; }
+  25% { color: orange; }
+  50% { color: yellow; }
+  75% { color: green; }
+  100% { color: blue; }
+}
