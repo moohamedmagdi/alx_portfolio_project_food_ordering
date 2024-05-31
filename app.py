@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
 import sqlite3
+import hashlib
+
 
 app = Flask(__name__)
 
@@ -32,6 +34,56 @@ def get_item_price(item):
     price = cursor.fetchone()
     conn.close()
     return price[0] if price else 0.0
+
+
+@app.route('/sign-up', methods=['POST'])
+def sign_up():
+    data = request.get_json()
+    name = data.get('name')
+    mobile = data.get('mobile')
+    address = data.get('address')
+    password = data.get('password')
+
+    # Hash the password
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO users (name, mobile, address, password) VALUES (?, ?, ?, ?)',
+                       (name, mobile, address, hashed_password))
+        conn.commit()
+        conn.close()
+        return jsonify({'success': True})
+    except sqlite3.IntegrityError:
+        return jsonify({'success': False, 'message': 'User already exists'})
+
+@app.route('/sign-in', methods=['POST'])
+def sign_in():
+    data = request.get_json()
+    mobile = data.get('mobile')
+    password = data.get('password')
+
+    # Hash the password
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users WHERE mobile = ? AND password = ?',
+                   (mobile, hashed_password))
+    user = cursor.fetchone()
+    conn.close()
+
+    if user:
+        user_data = {
+            'name': user[0],
+            'mobile': user[1],
+            'address': user[2] if len(user) > 2 else '',  # Check if address exists in tuple
+            'password': user[3] if len(user) > 3 else ''  # Check if password exists in tuple
+        }
+        return jsonify({'success': True, 'user': user_data})
+    else:
+        return jsonify({'success': False, 'message': 'Invalid mobile or password'})
 
 
 @app.route('/submit-order', methods=['POST'])
@@ -74,6 +126,33 @@ def submit_order():
         'total_price': total_price
         })
 
+
+
+@app.route('/order-history', methods=['GET'])
+def order_history():
+    mobile = request.args.get('mobile')
+    
+    if not mobile:
+        return jsonify({'status': 'error', 'message': 'User not signed in.'})
+
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM orders WHERE phone = ?', (mobile,))
+    orders = cursor.fetchall()
+    conn.close()
+
+    orders_list = [
+        {
+            'id': order[0],
+            'food': order[1],
+            'drink': order[2],
+            'food_quantity': order[6],
+            'drink_quantity': order[7],
+            'notes': order[5]
+        } for order in orders
+    ]
+
+    return jsonify({'status': 'success', 'orders': orders_list})
 
 
 if __name__ == '__main__':
