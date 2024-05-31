@@ -11,16 +11,152 @@
 
 <body>
   <header>
-    <h1>Welcome to Food Ordering Website (Order Now)</h1>
+    <h1>Welcome to Food Ordering</h1>
     <div class="header-buttons">
-      <button onclick="aboutUs()">About Us</button>
-      <button onclick="contactUs()">Contact Us</button>
+      <button id="order-now-btn" style="display:none;" onclick="showOrderSection()">Order Now</button>
     </div>
+    <div class="header-buttons">
+      <button id="home-btn" onclick="showOrderSection(data.user)">Home</button>
+    </div>  
+    <div class="header-buttons">
+      <button id="sidebar-btn" onclick="toggleSidebar()" style="display:none;">Settings & History</button>
+    </div>
+    <div class="header-buttons">
+      <button id="sign-in-btn">Sign In</button>
+      <button id="sign-out-btn" style="display:none;" onclick="signOut()">Sign Out</button>
+    </div>
+    <div class="header-buttons">
+    <button id="sign-up-btn">Sign Up</button>
+    </div>
+    <div class="header-buttons">
+      <button id="about-us-btn">About Us</button>
+      <button id="contact-us-btn">Contact Us</button>
+    </div>
+      
   </header>
 
   <main>
+    <section id="aboutUs" style="display: none;">
+      
+      <div class="container">
+        <ul class="food-list">
+          <li>
+        <h2>About Us</h2>
+        <p>About Us: We are a leading food delivery service dedicated to bringing you the best meals from top restaurants.<br>
+        </p>
+        </li>
+      </ul>
+      </div>
+    </section>
+    <section id="contactUs" style="display: none;">
+      
+      <div class="container">
+        <ul class="food-list">
+          <li>
+        <h2>Contact Us</h2>
+        <p>Contact Us: You can reach us at contact@foodordering.com<br>
+          or call us at 19191.
+        </p>
+        </li>
+        </ul>
+      </div>
+    </section>
+
+
+    <section id="home-page">
+     
+      <h2>Home Page</h2>
+      <p>We are a leading food delivery service dedicated to bringing you the best meals from top restaurants.<br>
+        Sign up for Ordering.
+      </p>
+      <!-- List of Foods -->
+    <h3>Foods List</h3>
+    <div class="container">
+    <ul class="food-list">
+        <li>
+            <h3>Pizza 🍕</h3>
+            <p>Description: Delicious pizza topped with cheese and your choice of toppings.</p>
+            <p>Price: $20</p>
+        </li>
+        <!-- Add more food items -->
+        <li>
+            <h3>Burger 🍔</h3>
+            <p>Description: Juicy burger with lettuce, tomato, and cheese.</p>
+            <p>Price: $15</p>
+        </li>
+        <li>
+            <h3>Pasta 🍝</h3>
+            <p>Description: Spaghetti with marinara sauce and meatballs.</p>
+            <p>Price: $10</p>
+        </li>
+    </ul>
+    </div>
     
-    <section>
+    <!-- List of Drinks -->
+    <h3>Drinks List</h3>
+    <div class="container">
+    <ul class="drink-list">
+        
+        <li>
+            <h3>Coke 🥤</h3>
+            <p>Description: Classic carbonated cola beverage.</p>
+            <p>Price: $2</p>
+        </li>
+        
+        <!-- Add more drink items -->
+        
+        <li>
+            <h3>Pepsi 🥤</h3>
+            <p>Description: Refreshing cola drink with a hint of citrus flavor.</p>
+            <p>Price: $3</p>
+        </li>
+        
+        <li>
+            <h3>Lemonade 🍋</h3>
+            <p>Description: Sweet and tangy lemon-flavored beverage.</p>
+            <p>Price: $4</p>
+        </li>
+        
+
+    </ul>
+    </div>
+    </section>
+
+    <section id="sign-in-form" style="display: none;">
+      <h2>Sign In</h2>
+      <form id="sign-in">
+        <label for="sign-in-mobile">Mobile:</label>
+        <input type="text" id="sign-in-mobile" name="mobile" required>
+        <label for="sign-in-password">Password:</label>
+        <input type="password" id="sign-in-password" name="password" required>
+        <button type="submit">Sign In</button>
+      </form>
+    </section>
+
+    <section id="sidebar" class="hidden">
+      <h2>Order History & Settings</h2>
+      <div id="welcome-message"></div>
+      <div class="order-history">
+        <button id="history-btn"onclick="fetchOrderHistory()">Order History</button>
+      </div>
+    </section>
+
+    <section id="sign-up-form" style="display: none;">
+      <h2>Sign Up</h2>
+      <form id="sign-up">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="mobile">Mobile:</label>
+        <input type="text" id="mobile" name="mobile" required>
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Sign Up</button>
+      </form>
+    </section>
+
+    <section id="order-section" style="display:none;">
       <h2>Order Form (Select items and click 'place order' below)</h2>
       <form id="order-form" action="/submit-order" method="POST">
         <label for="food">Food:</label>
@@ -28,7 +164,6 @@
           <option value="pizza">Pizza $20</option>
           <option value="burger">Burger $15</option>
           <option value="pasta">Pasta $10</option>
-          <!-- Add more food options here -->
         </select>
 
         <label for="food-quantity">Food Quantity:</label>
@@ -39,7 +174,6 @@
           <option value="coke">Coke $2</option>
           <option value="pepsi">Pepsi $3</option>
           <option value="lemonade">Lemonade $4</option>
-          <!-- Add more drink options here -->
         </select>
 
         <label for="drink-quantity">Drink Quantity:</label>
@@ -63,6 +197,13 @@
       <p>Total price: $<span id="total-price"></span></p>
     </section>
 
+    <section id="order-history-section" class="order-history-section">
+      <h2>Your Order History</h2>
+      <div id="order-history">
+          <!-- Order history will be inserted here -->
+      </div>
+    </section>
+
   </main>
 
   <footer>
@@ -71,18 +212,6 @@
 
 
 </body>
-
-<script>
-  function aboutUs() {
-    alert("About Us: We are a leading food delivery service dedicated to bringing you the best meals from top restaurants.");
-  }
-
-  function contactUs() {
-    alert("Contact Us: You can reach us at contact@foodordering.com or call us at 19191.");
-  }
-
-
-</script>
 
 </html>
 

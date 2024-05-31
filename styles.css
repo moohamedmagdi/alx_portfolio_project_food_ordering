@@ -5,6 +5,7 @@ body {
   padding: 0;
   background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
   color: #333;
+  text-align: center;
 }
 
 header {
@@ -57,10 +58,21 @@ main {
   background: white;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  align-items: center;
 }
 
 h2 {
   color: #ff6f61;
+  font-size: 3rem;
+}
+
+p {
+  font-size: 24px;
+  color: #1a06ef; /* Adjust color as needed */
+}
+
+h3 {
+  color: #060201;
   font-size: 1.8rem;
 }
 
@@ -75,7 +87,7 @@ label {
   color: #ff6f61;
 }
 
-select, textarea, input[type="text"], input[type="number"] {
+select, textarea, input[type="text"], input[type="number"], input[type="password"] {
   margin-bottom: 15px;
   padding: 10px;
   border: 2px solid #704ac1;
@@ -140,6 +152,7 @@ footer {
 footer p {
   margin: 0;
   font-size: 1rem;
+  color: white;
 }
 
 /* Additional Fun Styles */
@@ -147,11 +160,11 @@ button[type="submit"]:active {
   transform: scale(0.95);
 }
 
-textarea, select, input[type="text"], input[type="number"] {
+textarea, select, input[type="text"], input[type="number"], input[type="password"] {
   transition: box-shadow 0.3s ease, border 0.3s ease;
 }
 
-textarea:focus, select:focus, input[type="text"]:focus, input[type="number"]:focus {
+textarea:focus, select:focus, input[type="text"]:focus, input[type="number"]:focus, input[type="password"]:focus {
   box-shadow: 0 0 10px rgba(255, 111, 97, 0.5);
   border: 2px solid #ff9770;
 }
@@ -175,7 +188,6 @@ textarea:focus, select:focus, input[type="text"]:focus, input[type="number"]:foc
   font-weight: bold;
 }
 
-
 button[type="submit"] {
   background-color: #704ac1;
   font-weight: bold;
@@ -188,4 +200,111 @@ button[type="submit"] {
   50% { color: yellow; }
   75% { color: green; }
   100% { color: blue; }
+}
+
+
+/* Custom styling for the home page */
+.food-list, .drink-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 80%;
+  max-width: 800px;
+  align-items: center;
+}
+
+.food-list li, .drink-list li {
+  background: linear-gradient(135deg, #1f1c2c 0%, #928dab 100%);
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+  align-items: center;
+  text-align: center;
+}
+
+.food-list li:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.drink-list li:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.food-list h3, .drink-list h3 {
+  margin: 0;
+  font-size: 70px;
+  color: #e0e0e0;
+}
+
+.food-list h2 {
+  font-size: 24px;
+  color: #ff6f61; /* Adjust color as needed */
+}
+
+.food-list p, .drink-list p {
+  margin: 10px 0;
+  font-size: 18px;
+  color: #c0c0c0;
+}
+
+.container {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+
+
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background: #f4f4f4;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  padding-top: 60px; /* to account for fixed header */
+  display: none;
+}
+
+#sidebar h2 {
+  padding-left: 15px;
+  color: #0c19ae;
+}
+
+#sidebar .order-history,
+#sidebar .settings {
+  padding: 15px;
+}
+
+#sidebar button {
+  width: 100%;
+  padding: 10px;
+  background: #704ac1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#sidebar button:hover {
+  background: #28d24a;
+}
+
+
+
+/* Add your CSS here to style the order history */
+.order-history-section {
+  display: none; /* Hidden by default, shown when user is signed in */
+}
+.order-item {
+  border: 1px solid #ccc;
+  margin: 10px;
+  padding: 10px;
 }
