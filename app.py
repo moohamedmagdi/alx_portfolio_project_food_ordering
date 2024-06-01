@@ -21,6 +21,9 @@ def create_orders_table():
             notes TEXT,
             food_quantity INTEGER,
             drink_quantity INTEGER
+            food_price REAL,
+            drink_price REAL,
+            total_price REAL
         )
     ''')
     conn.commit()
@@ -96,6 +99,7 @@ def submit_order():
     notes = data.get('notes')
     food_quantity = data.get('food_quantity')
     drink_quantity = data.get('drink_quantity')
+    
 
     food_price = get_item_price(food) * food_quantity
     drink_price = get_item_price(drink) * drink_quantity
@@ -106,9 +110,9 @@ def submit_order():
 
     # Insert the order into the database
     cursor.execute('''
-        INSERT INTO orders (food, drink, phone, address, notes, food_quantity, drink_quantity)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ''', (food, drink, phone, address, notes, food_quantity, drink_quantity))
+        INSERT INTO orders (food, drink, phone, address, notes, food_quantity, drink_quantity, food_price, drink_price, total_price)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (food, drink, phone, address, notes, food_quantity, drink_quantity, food_price, drink_price, total_price))
     conn.commit()
 
     # Fetch the ID of the last inserted order
@@ -120,10 +124,17 @@ def submit_order():
     # Return the order ID and success message as JSON response
     return jsonify({
         'message': 'Order submitted successfully!, call 19191 to check your order delivery status.', 
+        
         'order_id': order_id,
+        'food': food,
+        'drink': drink,
+        'food_quantity': food_quantity,
+        'drink_quantity': drink_quantity,
         'food_price': food_price,
         'drink_price': drink_price,
-        'total_price': total_price
+        'total_price': total_price,
+        'notes': notes
+        
         })
 
 
@@ -137,7 +148,7 @@ def order_history():
 
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM orders WHERE phone = ?', (mobile,))
+    cursor.execute('SELECT * FROM orders WHERE phone = ? ORDER BY id DESC', (mobile,))
     orders = cursor.fetchall()
     conn.close()
 
@@ -148,11 +159,36 @@ def order_history():
             'drink': order[2],
             'food_quantity': order[6],
             'drink_quantity': order[7],
-            'notes': order[5]
+            'notes': order[5],
+            'food_price': order[8],
+            'drink_price': order[9],
+            'total_price': order[10],
+            'payment_method':order[11]
         } for order in orders
     ]
 
     return jsonify({'status': 'success', 'orders': orders_list})
+
+
+
+@app.route('/submit-payment', methods=['POST'])
+def submit_payment():
+    data = request.get_json()
+    order_id = data.get('order_id')
+    payment_method = data.get('payment_method')
+
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute('''
+        UPDATE orders
+        SET payment_method = ?
+        WHERE id = ?
+    ''', (payment_method, order_id))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'status': 'success', 'message': 'Payment method submitted successfully.'})
+
 
 
 if __name__ == '__main__':
