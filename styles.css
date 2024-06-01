@@ -308,3 +308,34 @@ button[type="submit"] {
   margin: 10px;
   padding: 10px;
 }
+
+
+/* Payment Section */
+.payment-section {
+  display: none; /* Hidden by default, shown after order is placed */
+  margin: 20px;
+}
+
+.payment-option {
+  margin: 10px 0;
+}
+
+
+#payment-section button {
+  background: #704ac1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background 0.3s ease;
+}
+
+#payment-section button:hover {
+  background: #28d24a;
+}
+
+
+
