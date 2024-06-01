@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('aboutUs').style.display = 'none';
     document.getElementById('contactUs').style.display = 'none';
     document.getElementById('order-history-section').style.display = 'none';
+    document.getElementById('payment-section').style.display = 'none';
   });
 
   document.getElementById('sidebar-btn').addEventListener('click', function() {
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('home-page').style.display = 'none';
     document.getElementById('aboutUs').style.display = 'none';
     document.getElementById('order-history-section').style.display = 'none';
+    document.getElementById('payment-section').style.display = 'none';
   });
 
   document.getElementById('about-us-btn').addEventListener('click', function() {
@@ -42,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('home-page').style.display = 'none';
     document.getElementById('contactUs').style.display = 'none';
     document.getElementById('order-history-section').style.display = 'none';
+    document.getElementById('payment-section').style.display = 'none';
   });
 
   document.getElementById('sign-in-btn').addEventListener('click', function() {
@@ -59,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('contactUs').style.display = 'none';
     document.getElementById('aboutUs').style.display = 'none';
     document.getElementById('order-history-section').style.display = 'none';
+    document.getElementById('payment-section').style.display = 'none';
   });
 
 
@@ -68,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('home-page').style.display = 'none';
     document.getElementById('contactUs').style.display = 'none';
     document.getElementById('aboutUs').style.display = 'none';
+    document.getElementById('payment-section').style.display = 'none';
 
   });
 
@@ -75,6 +80,14 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('sign-up-btn').addEventListener('click', function() {
     document.getElementById('sign-in-form').style.display = 'none';
     document.getElementById('sign-up-form').style.display = 'block';
+    document.getElementById('home-page').style.display = 'none';
+    document.getElementById('contactUs').style.display = 'none';
+    document.getElementById('aboutUs').style.display = 'none';
+  });
+
+  document.getElementById('place-order-button').addEventListener('click', function() {
+    document.getElementById('order-section').style.display = 'none';
+    document.getElementById('sign-up-form').style.display = 'none';
     document.getElementById('home-page').style.display = 'none';
     document.getElementById('contactUs').style.display = 'none';
     document.getElementById('aboutUs').style.display = 'none';
@@ -169,8 +182,11 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(response => response.json())
     .then(data => {
       console.log(data); // Log the response from the server
+
+        displayPaymentSection(data.order_id, data.food, data.drink, data.food_quantity, data.drink_quantity, data.food_price, data.drink_price, data.total_price, data.notes); // Show payment options after placing order
+        localStorage.setItem('order', JSON.stringify(data));
         // Generate order summary and show it in an alert box
-        showOrderSummaryAlert(data.message, data.order_id, data.food_price, data.drink_price, data.total_price);
+        // showOrderSummaryAlert(data.message, data.order_id, data.food, data.drink, data.food_quantity, data.drink_quantity, data.food_price, data.drink_price, data.total_price, data.notes);
     })
   
     .catch(error => {
@@ -179,18 +195,110 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  function showOrderSummaryAlert(message, orderId, foodPrice, drinkPrice, totalPrice) {
+
+  function displayPaymentSection(orderId, food, drink, food_quantity, drink_quantity, food_price, drink_price, total_price, notes) {
+    const paymentSection = document.getElementById('payment-section');
+    const orderSummary = document.getElementById('order-summary');
+    
+    orderSummary.innerHTML = `
+        <h3>Order ID: ${orderId}</h3>
+        <p>Food: ${food} (Quantity: ${food_quantity}) - $${food_price.toFixed(2)}</p>
+        <p>Drink: ${drink} (Quantity: ${drink_quantity}) - $${drink_price.toFixed(2)}</p>
+        <p>Notes: ${notes}</p>
+        <p>Total Price: $${total_price.toFixed(2)}</p>
+    `;
+  
+    paymentSection.style.display = 'block';
+  }
+  
+
+  document.getElementById('pay-with-card').addEventListener('click', function() {
+    document.getElementById('card-details').style.display = 'block';
+    document.getElementById('submit-card-payment').style.display = 'block';
+  });
+  
+  document.getElementById('submit-card-payment').addEventListener('click', function() {
+    // Process card payment here (e.g., integrate with a payment gateway)
+    alert(`Payment failed, please choose pay on delivery`);
+    
+  });
+
+
+  function getOrderDataFromLocalStorage() {
+    const orderData = localStorage.getItem('order');
+    return orderData ? JSON.parse(orderData) : null;
+  }
+  
+  document.getElementById('pay-on-delivery').addEventListener('click', function() {
+    const orderData = getOrderDataFromLocalStorage();
+  
+    if (orderData) {
+      submitPaymentMethod(orderData.order_id, 'Pay on Delivery');
+      showOrderSummaryAlert(
+        orderData.message,
+        orderData.order_id,
+        orderData.food,
+        orderData.drink,
+        orderData.food_quantity,
+        orderData.drink_quantity,
+        orderData.food_price,
+        orderData.drink_price,
+        orderData.total_price,
+        orderData.notes
+      );
+    } else {
+      alert('Order submited');
+    }
+    document.getElementById('home-page').style.display = 'block';
+    document.getElementById('payment-section').style.display = 'none';
+  });
+
+
+  function showOrderSummaryAlert(message, orderId, food, drink, foodQuantity, drinkQuantity, foodPrice, drinkPrice, totalPrice, notes) {
     const summary = `
       ${message}
       Your order ID is: ${orderId}
+      Food: ${food}
+      Drink: ${drink}
+      Food quantity: ${foodQuantity}
+      Drink quantity: ${drinkQuantity}
       Food price: $${foodPrice.toFixed(2)}
       Drink price: $${drinkPrice.toFixed(2)}
       Total price: $${totalPrice.toFixed(2)}
+      Notes: ${notes}
+
     `;
     alert(summary);
   }
 
+
+  // Function to submit the payment method
+function submitPaymentMethod(orderId, paymentMethod) {
+  fetch('/submit-payment', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ order_id: orderId, payment_method: paymentMethod })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.status === 'success') {
+      alert(data.message);
+      
+      
+    } else {
+      alert('Failed to submit payment method.');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred while submitting the payment method.');
+  });
+}
+
 });
+
 
 
   function showOrderSection(user) {
@@ -226,6 +334,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('contactUs').style.display = 'none';
     document.getElementById('aboutUs').style.display = 'none';
     document.getElementById('order-history-section').style.display = 'none';
+    document.getElementById('payment-section').style.display = 'none';
   };
 
 
@@ -303,6 +412,10 @@ function displayOrderHistory(orders) {
       <p>Food: ${order.food} (Quantity: ${order.food_quantity})</p>
       <p>Drink: ${order.drink} (Quantity: ${order.drink_quantity})</p>
       <p>Notes: ${order.notes}</p>
+      <p>Food Price: $${order.food_price}</p>
+      <p>Drink Price: $${order.drink_price}</p>
+      <p>Total Price: $${order.total_price}</p>
+      <p>Payment Method: $${order.payment_method}</p>
     `;
 
     orderHistory.appendChild(orderItem);
@@ -320,6 +433,11 @@ function showSignedInState() {
   document.getElementById('sign-out-btn').style.display = 'inline-block';
   
 }
+
+
+
+
+
 
 
 
