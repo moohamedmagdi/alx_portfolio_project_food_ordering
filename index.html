@@ -185,17 +185,11 @@
         <input type="text" id="address" name="address" required>
         <label for="notes">Notes:</label>
         <input type="text" id="notes" name="notes">
-        <button type="submit">Place Order</button>
+        <button type="submit" id="place-order-button">Place Order</button>
       </form>
     </section>
 
-    <section id="order-summary" style="display: none;">
-      <p id="message"></p>
-      <p>Your order ID is: <span id="order-id"></span></p>
-      <p>Food price: $<span id="food-price"></span></p>
-      <p>Drink price: $<span id="drink-price"></span></p>
-      <p>Total price: $<span id="total-price"></span></p>
-    </section>
+    
 
     <section id="order-history-section" class="order-history-section">
       <h2>Your Order History</h2>
@@ -203,6 +197,24 @@
           <!-- Order history will be inserted here -->
       </div>
     </section>
+
+
+    <!-- Payment Section -->
+    <section id="payment-section" class="payment-section">
+      <h2>Complete Your Payment</h2>
+      <div id="order-summary">
+          <!-- Order summary will be inserted here -->
+      </div>
+      <div class="payment-option">
+          <button id="pay-on-delivery">Pay on Delivery</button>
+      </div>
+      <div class="payment-option">
+          <button id="pay-with-card">Pay with Card</button>
+          <input type="text" id="card-details" placeholder="Enter Card Details" style="display:none;">
+          <button id="submit-card-payment" style="display:none;">Submit Payment</button>
+      </div>
+    </section>
+
 
   </main>
 
