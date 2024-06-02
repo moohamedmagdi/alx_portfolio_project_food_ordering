@@ -212,10 +212,10 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
 
-  document.getElementById('pay-with-card').addEventListener('click', function() {
-    document.getElementById('card-details').style.display = 'block';
-    document.getElementById('submit-card-payment').style.display = 'block';
-  });
+  //document.getElementById('pay-with-card').addEventListener('click', function() {
+    //document.getElementById('card-details').style.display = 'block';
+    //document.getElementById('submit-card-payment').style.display = 'block';
+  //});
   
   document.getElementById('submit-card-payment').addEventListener('click', function() {
     // Process card payment here (e.g., integrate with a payment gateway)
